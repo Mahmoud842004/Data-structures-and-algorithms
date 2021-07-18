@@ -1,31 +1,33 @@
 void main(List<String> args) {
-  print(integermultiplication(m1: 1234, m2: 5678));
+  print(summparis([1, 2, 4, 4,4], 8));
 }
 
-int integermultiplication({int m1, int m2}) {
-  var list1 = convertint(m1);
-  var finalresult = 0;
-  var passednumbers = 0;
-
-  for (var i = list1.length - 1; i >= 0; i--) {
-    var finalnumber = '';
-    for (var i = 1; i <= passednumbers; i++) {
-      finalnumber = '${finalnumber}0';
+dynamic sumpairs(List list, int sum) {
+  var returnedlist = [];
+  for (var i = 0; i < list.length - 1; i++) {
+    for (var j = 0; j < list.length; j++) {
+      if (list[i] + list[j] == sum && i != j) {
+        returnedlist.add([list[i], list[j]]);
+      }
     }
-    finalnumber = '${list1[i] * m2}$finalnumber';
-    finalresult = finalresult + int.parse(finalnumber);
-    passednumbers++;
-    print(finalnumber);
   }
-  return finalresult;
+  if (returnedlist.length == 0) {
+    return 'there is no items';
+  } else {
+    return returnedlist;
+  }
 }
 
-List<int> convertint(int number) {
-  List<int> intlist = [];
-  var stringnumber = number.toString();
-  var stringlist = stringnumber.split('');
-  stringlist.forEach((element) {
-    intlist.add(int.parse(element));
-  });
-  return intlist;
+dynamic summparis(List list, int sum) {
+  var returnedlist = [];
+  for (var i = 0; i < list.length; i++) {
+    if (list.contains(sum - list[i]) && i != list.indexOf(sum - list[i])) {
+      returnedlist.add([list[i], sum - list[i]]);
+    }
+  }
+  if (returnedlist.isEmpty) {
+    return 'there is no paired item there sum is equel the result';
+  } else {
+    return returnedlist;
+  }
 }
