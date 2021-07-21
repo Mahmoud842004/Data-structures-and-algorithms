@@ -1,29 +1,23 @@
-
 void main(List<String> args) {
-  print(
-    multiplication(
-        number1:
-            '3141592653589793238462643383279502884197169399375105820974944592',
-        number2:
-            '2718281828459045235360287471352662497757247093699959574966967627'),
-  );
+  print(countinginversions([1, 3, 5, 2, 4, 6], 6));
 }
 
-List mergesort(List input) {
+List countinginversions(List input, int inputlength) {
   if (input.length == 1) {
     return input;
   }
 
-  var fristlist = mergesort(input.sublist(0, (input.length / 2).toInt()));
-  var secoundlist =
-      mergesort(input.sublist((input.length / 2).toInt(), input.length));
-  return merge(fristlist, secoundlist);
+  var fristlist = countinginversions(
+      input.sublist(0, (input.length / 2).toInt()), inputlength);
+  var secoundlist = countinginversions(
+      input.sublist((input.length / 2).toInt(), input.length), inputlength);
+  return mergeandcount(fristlist, secoundlist, inputlength);
 }
 
-List merge(List fristlist, List secoundlist) {
+List mergeandcount(List fristlist, List secoundlist, int inputlength) {
   var listlenght = fristlist.length + secoundlist.length;
   var sortedlist = [];
-
+  var inversedpairs = 0;
   var i = 0;
   var j = 0;
 
@@ -38,26 +32,20 @@ List merge(List fristlist, List secoundlist) {
       if (fristlist[i] < secoundlist[j]) {
         sortedlist.add(fristlist[i]);
         i = i + 1;
-      } else {
+      } else if (fristlist[i] > secoundlist[j]) {
         sortedlist.add(secoundlist[j]);
         j = j + 1;
+        if (listlenght == inputlength) {
+          inversedpairs += fristlist.length - i;
+        }
+      } else {
+        sortedlist.add(secoundlist[i]);
+        i = i + 1;
       }
     }
   }
+  if (listlenght == inputlength) {
+    print(inversedpairs);
+  }
   return sortedlist;
-}
-
-BigInt multiplication({String number1, String number2}) {
-  var num1 = BigInt.parse(number1);
-  var num2 = BigInt.parse(number2);
-  var result = num1 * num2;
-  return result;
-}
-
-List<BigInt> convertnumber(BigInt number) {
-  var numberslist = [];
-  number.toString().split('').forEach((element) {
-    numberslist.add(BigInt.parse(element));
-  });
-  return numberslist;
 }
