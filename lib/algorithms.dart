@@ -1,51 +1,43 @@
+import 'dart:math';
+
 void main(List<String> args) {
-  print(countinginversions([1, 3, 5, 2, 4, 6], 6));
+  quicksort(
+    0,
+    9,
+    List.generate(
+      10,
+      (index) => Random().nextInt(10),
+    ),
+  );
 }
 
-List countinginversions(List input, int inputlength) {
-  if (input.length == 1) {
-    return input;
-  }
+void quicksort(int start, int end, List l) {
+  try {
+    if (start > end) {
+      print(l);
+    }
+    if (end == start || end == -1 || start > end) {
+      return;
+    }
+    int p = l[start];
+    var i = start;
 
-  var fristlist = countinginversions(
-      input.sublist(0, (input.length / 2).toInt()), inputlength);
-  var secoundlist = countinginversions(
-      input.sublist((input.length / 2).toInt(), input.length), inputlength);
-  return mergeandcount(fristlist, secoundlist, inputlength);
-}
-
-List mergeandcount(List fristlist, List secoundlist, int inputlength) {
-  var listlenght = fristlist.length + secoundlist.length;
-  var sortedlist = [];
-  var inversedpairs = 0;
-  var i = 0;
-  var j = 0;
-
-  for (var k = 0; k < listlenght; k++) {
-    if (i == fristlist.length) {
-      sortedlist.add(secoundlist[j]);
-      j = j + 1;
-    } else if (j == secoundlist.length) {
-      sortedlist.add(fristlist[i]);
-      i = i + 1;
-    } else {
-      if (fristlist[i] < secoundlist[j]) {
-        sortedlist.add(fristlist[i]);
-        i = i + 1;
-      } else if (fristlist[i] > secoundlist[j]) {
-        sortedlist.add(secoundlist[j]);
-        j = j + 1;
-        if (listlenght == inputlength) {
-          inversedpairs += fristlist.length - i;
-        }
-      } else {
-        sortedlist.add(secoundlist[i]);
+    for (var j = start + 1; j <= end; j++) {
+      if (l[j] < p) {
+        var temp = l[i + 1];
+        l[i + 1] = l[j];
+        l[j] = temp;
         i = i + 1;
       }
     }
+    var temp = l[start];
+    l[start] = l[i];
+    l[i] = temp;
+    p = l[i];
+
+    quicksort(start, l.indexOf(p) - 1, l);
+    quicksort(l.indexOf(p) + 1, end, l);
+  } catch (e) {
+    print(e.toString());
   }
-  if (listlenght == inputlength) {
-    print(inversedpairs);
-  }
-  return sortedlist;
 }
